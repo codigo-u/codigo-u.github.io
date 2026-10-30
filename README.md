@@ -37,8 +37,8 @@ y abre http://localhost:5500
 
 ## Publicada en GitHub Pages
 
-- Página: https://garzonpradamarleny-beep.github.io/codigo-u-web/
-- Repositorio: https://github.com/garzonpradamarleny-beep/codigo-u-web
+- Página: https://codigo-u.github.io/
+- Repositorio: https://github.com/codigo-u/codigo-u.github.io (organización `codigo-u`)
 
 Para publicar un cambio, desde esta carpeta:
 
