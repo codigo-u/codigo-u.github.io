@@ -35,9 +35,17 @@ python -m http.server 5500
 
 y abre http://localhost:5500
 
-## Publicar en GitHub Pages
+## Publicada en GitHub Pages
 
-1. Crea un repositorio en GitHub (por ejemplo `codigo-u-web`).
-2. Sube todos los archivos de esta carpeta: con **Add file → Upload files** desde la web, o con `git push` si tienes Git instalado.
-3. En el repositorio ve a **Settings → Pages**, y en *Branch* elige `main` y la carpeta `/ (root)`. Guarda.
-4. En uno o dos minutos la página queda en `https://TU-USUARIO.github.io/codigo-u-web/`.
+- Página: https://garzonpradamarleny-beep.github.io/codigo-u-web/
+- Repositorio: https://github.com/garzonpradamarleny-beep/codigo-u-web
+
+Para publicar un cambio, desde esta carpeta:
+
+```bash
+git add -A
+git commit -m "Describe el cambio"
+git push
+```
+
+En uno o dos minutos la página se actualiza sola.
