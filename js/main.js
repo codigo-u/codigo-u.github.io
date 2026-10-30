@@ -31,6 +31,61 @@
   const owlTpl = document.getElementById('owl-tpl');
   document.querySelectorAll('[data-owl]').forEach((el) => el.replaceChildren(owlTpl.content.cloneNode(true)));
 
+  /* ---------- Búho que reacciona al tocarlo ---------- */
+  const OWL_PHRASES = ['¡Uhuu!', '¡Tú puedes!', '¡A estudiar!', '¿Ya hiciste tu racha?', '¡Vamos por ese 400!', '¡Hoy sí!'];
+  let phrase = 0;
+  document.querySelectorAll('[data-poke]').forEach((wrap) => {
+    wrap.setAttribute('role', 'button');
+    wrap.setAttribute('tabindex', '0');
+    wrap.setAttribute('aria-label', 'Búho de Código U, tócalo');
+    const bubble = document.createElement('span');
+    bubble.className = 'owl-bubble';
+    bubble.setAttribute('aria-live', 'polite');
+    wrap.appendChild(bubble);
+    if (wrap.classList.contains('hero__owl')) {
+      const hint = document.createElement('span');
+      hint.className = 'owl-hint';
+      hint.textContent = 'Tócame';
+      wrap.appendChild(hint);
+    }
+
+    const poke = () => {
+      wrap.querySelector('.owl-hint')?.remove();
+      bubble.textContent = OWL_PHRASES[phrase++ % OWL_PHRASES.length];
+
+      if (!animate) {
+        bubble.classList.add('is-on');
+        clearTimeout(bubble.hideTimer);
+        bubble.hideTimer = setTimeout(() => bubble.classList.remove('is-on'), 1600);
+        return;
+      }
+      const svg = wrap.querySelector('.owl');
+      const horns = [svg.querySelector('.om-horn-l'), svg.querySelector('.om-horn-r')];
+      const wing = svg.querySelector('.om-gold');
+      gsap.killTweensOf([svg, ...horns, wing, bubble]);
+
+      // Salto con aplastado y estirado, un giro corto y aterriza rebotando
+      gsap.timeline()
+        .to(svg, { scaleX: 1.12, scaleY: 0.86, y: 8, rotation: 0, transformOrigin: '50% 100%', duration: 0.12, ease: 'power2.in' })
+        .to(svg, { scaleX: 0.94, scaleY: 1.08, y: -34, rotation: gsap.utils.random([-10, 10]), duration: 0.28, ease: 'power2.out' })
+        .to(svg, { scaleX: 1, scaleY: 1, y: 0, rotation: 0, duration: 0.6, ease: 'bounce.out' });
+      // Orejas que se agitan y ala dorada que aletea
+      horns.forEach((horn, i) => gsap.fromTo(horn, { rotation: 0 }, {
+        rotation: i ? 16 : -16, transformOrigin: i ? '0% 100%' : '100% 100%',
+        duration: 0.12, yoyo: true, repeat: 5, ease: 'sine.inOut',
+      }));
+      gsap.fromTo(wing, { rotation: 0 }, { rotation: -22, transformOrigin: '100% 0%', duration: 0.14, yoyo: true, repeat: 5, ease: 'sine.inOut' });
+      // Burbuja con una frase
+      gsap.timeline()
+        .fromTo(bubble, { scale: 0, opacity: 0, y: 10 }, { scale: 1, opacity: 1, y: 0, transformOrigin: '50% 100%', duration: 0.4, ease: 'back.out(2.5)' })
+        .to(bubble, { opacity: 0, y: -8, duration: 0.3 }, '+=1.4');
+    };
+    wrap.addEventListener('click', poke);
+    wrap.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); poke(); }
+    });
+  });
+
   /* ---------- Reloj: marcas de las horas ---------- */
   const ticks = document.querySelector('.clock__ticks');
   if (ticks) {
@@ -104,7 +159,6 @@
      ========================================================== */
   gsap.registerPlugin(ScrollTrigger);
   ScrollTrigger.config({ ignoreMobileResize: true });
-  const mm = gsap.matchMedia();
   const finePointer = matchMedia('(pointer: fine)').matches;
 
   // Los disparadores se calculan en el orden de la página: así cada sección fija
@@ -179,35 +233,23 @@
   });
 
   /* ---------- 3. Notas que caen ---------- */
-  // En escritorio la escena se queda fija y las notas caen una por una dentro de la pantalla.
-  mm.add('(min-width: 900px)', () => {
-    const drop = gsap.timeline({
-      scrollTrigger: {
-        trigger: '.problem__stage',
-        start: 'top top',
-        end: () => '+=' + innerHeight * 1.4,
-        pin: true,
-        scrub: 0.6,
-        anticipatePin: 1,
-      },
-    });
-    gsap.utils.toArray('.note').forEach((note, i) => {
-      drop
-        .from(note, { opacity: 0, duration: 0.12 }, i * 0.55)
-        .from(note, { y: () => -innerHeight * 0.8, rotation: i % 2 ? 28 : -24, duration: 1, ease: 'power2.out' }, i * 0.55);
-    });
-    drop.to({}, { duration: 0.4 });
-    // Al cambiar el tamaño de la ventana esta escena se vuelve a crear: reordenar.
-    ScrollTrigger.sort(byPageOrder);
+  // La escena se queda fija y las notas caen una por una dentro de la pantalla.
+  // En computador quedan regadas; en celular se apilan (lo decide el CSS).
+  const drop = gsap.timeline({
+    scrollTrigger: {
+      trigger: '.problem__stage',
+      start: 'top top',
+      end: () => '+=' + innerHeight * 1.4,
+      pin: true,
+      scrub: 0.6,
+    },
   });
-  mm.add('(max-width: 899px)', () => {
-    gsap.utils.toArray('.note').forEach((note, i) => {
-      gsap.from(note, {
-        x: i % 2 ? 80 : -80, rotation: i % 2 ? 14 : -14, opacity: 0, duration: 0.9, ease: 'back.out(1.6)',
-        scrollTrigger: { trigger: note, start: 'top 90%' },
-      });
-    });
+  gsap.utils.toArray('.note').forEach((note, i) => {
+    drop
+      .from(note, { opacity: 0, duration: 0.12 }, i * 0.55)
+      .from(note, { y: () => -innerHeight * 0.8, rotation: i % 2 ? 28 : -24, duration: 1, ease: 'power2.out' }, i * 0.55);
   });
+  drop.to({}, { duration: 0.4 });
 
   /* ---------- 4. Mapa de las tres ciudades ---------- */
   const routes = document.querySelectorAll('.cities__map .route');

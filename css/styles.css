@@ -221,6 +221,51 @@ ul { margin: 0; padding: 0; list-style: none; }
 .nav__app { display: none; }
 @media (min-width: 640px) { .nav__app { display: inline-flex; } }
 
+/* ---------- Búho que reacciona al tocarlo ---------- */
+[data-poke] { position: relative; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+[data-poke]:focus-visible { outline-offset: 8px; }
+.owl-bubble {
+  position: absolute;
+  bottom: calc(100% + 12px);
+  left: 50%;
+  translate: -50% 0;
+  padding: .5em .95em;
+  border-radius: 14px;
+  background: var(--ink);
+  color: var(--cream);
+  font: 800 .95rem var(--f-display);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  box-shadow: 4px 4px 0 var(--gold);
+}
+.owl-bubble::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  translate: -50% 0;
+  border: 7px solid transparent;
+  border-top-color: var(--ink);
+}
+.owl-bubble.is-on { opacity: 1; }
+.hero__owl .owl-bubble { left: auto; right: 0; translate: none; }
+.hero__owl .owl-bubble::after { left: auto; right: 24px; translate: none; }
+.owl-hint {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  translate: -50% 0;
+  margin-top: 8px;
+  font: 800 .68rem var(--f-display);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--gold-text);
+  white-space: nowrap;
+  animation: hint 1.8s ease-in-out infinite;
+}
+@keyframes hint { 50% { opacity: .35; } }
+
 /* ---------- 2. Hero ---------- */
 .hero {
   position: relative;
@@ -310,6 +355,27 @@ ul { margin: 0; padding: 0; list-style: none; }
   line-height: .95;
   letter-spacing: -.045em;
   text-align: right;
+}
+
+/* Celular: la escena también se queda fija y las notas caen una sobre otra,
+   dejando ver el título de las de abajo. */
+@media (max-width: 899px) {
+  .anim .problem__stage {
+    height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 64px;
+  }
+  .anim .problem__stage .lead { margin-top: 0; }
+  .anim .notes { position: relative; display: block; height: 470px; margin: 24px 0 0; }
+  .anim .note {
+    position: absolute;
+    top: calc(var(--i) * 80px);
+    left: calc(50% - min(310px, 86vw) / 2 + var(--dx, -10px));
+    margin: 0;
+  }
+  .anim .note:nth-child(even) { --dx: 10px; }
 }
 
 @media (min-width: 900px) {
@@ -662,6 +728,6 @@ ul { margin: 0; padding: 0; list-style: none; }
 
 /* ---------- Movimiento reducido ---------- */
 @media (prefers-reduced-motion: reduce) {
-  .ticker__track, .scroll-cue span, .cities__map .city .pulse { animation: none; }
+  .ticker__track, .scroll-cue span, .cities__map .city .pulse, .owl-hint { animation: none; }
   .member, .plan, .btn { transition: none; }
 }
