@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Código U · Pre-ICFES hecho por estudiantes</title>
+  <meta name="description" content="CÓDIGO U es el Pre-ICFES hecho por estudiantes, para estudiantes: plataforma propia, simulacros reales en las 5 áreas del Saber 11 y un solo pago de $99.900 COP por temporada.">
+  <meta name="theme-color" content="#F4EAD3">
+  <meta property="og:title" content="Código U · ¿Por qué no hacer posible lo imposible?">
+  <meta property="og:description" content="Pre-ICFES de alto nivel a precio justo. Un solo pago de $99.900 COP por temporada.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/owl.svg">
+  <link rel="icon" href="assets/owl.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&family=Manrope:wght@500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+
+  <script>
+    // Las animaciones solo se activan si el usuario no pidió reducir el movimiento.
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('anim');
+  </script>
+</head>
+<body>
+
+  <!-- Búho en línea: el JS lo clona en cada [data-owl] para poder animar sus partes -->
+  <template id="owl-tpl">
+    <svg class="owl" viewBox="300 30 480 690" aria-hidden="true" focusable="false">
+      <g class="om-body">
+        <path class="om-leaf-l" d="M379.0,331.0C376.5,336.7 369.0,354.0 366.0,365.0C363.0,376.0 361.5,384.3 361.0,397.0C360.5,409.7 361.8,429.2 363.0,441.0C364.2,452.8 365.8,459.2 368.0,468.0C370.2,476.8 371.0,482.3 376.0,494.0C381.0,505.7 389.3,523.8 398.0,538.0C406.7,552.2 417.5,566.7 428.0,579.0C438.5,591.3 451.8,603.5 461.0,612.0C470.2,620.5 478.5,626.7 483.0,630.0C487.5,633.3 486.7,642.0 488.0,632.0C489.3,622.0 490.7,586.8 491.0,570.0C491.3,553.2 490.7,541.2 490.0,531.0C489.3,520.8 488.7,517.2 487.0,509.0C485.3,500.8 482.5,489.8 480.0,482.0C477.5,474.2 475.3,469.0 472.0,462.0C468.7,455.0 465.2,447.8 460.0,440.0C454.8,432.2 448.3,423.2 441.0,415.0C433.7,406.8 422.8,398.2 416.0,391.0C409.2,383.8 404.8,379.0 400.0,372.0C395.2,365.0 390.2,355.8 387.0,349.0C383.8,342.2 382.3,334.0 381.0,331.0C379.7,328.0 381.5,325.3 379.0,331.0Z"/>
+        <path class="om-leaf-r" d="M733.0,318.0C731.2,314.3 735.2,314.3 729.0,319.0C722.8,323.7 710.3,335.3 696.0,346.0C681.7,356.7 657.7,372.0 643.0,383.0C628.3,394.0 619.8,400.7 608.0,412.0C596.2,423.3 582.2,438.2 572.0,451.0C561.8,463.8 553.2,478.5 547.0,489.0C540.8,499.5 539.0,504.3 535.0,514.0C531.0,523.7 526.7,533.7 523.0,547.0C519.3,560.3 515.2,580.8 513.0,594.0C510.8,607.2 510.5,614.8 510.0,626.0C509.5,637.2 509.2,648.5 510.0,661.0C510.8,673.5 513.5,694.8 515.0,701.0C516.5,707.2 517.8,701.2 519.0,698.0C520.2,694.8 520.0,688.7 522.0,682.0C524.0,675.3 526.0,668.3 531.0,658.0C536.0,647.7 544.8,631.0 552.0,620.0C559.2,609.0 564.3,602.5 574.0,592.0C583.7,581.5 601.5,564.8 610.0,557.0C618.5,549.2 616.8,552.7 625.0,545.0C633.2,537.3 651.0,519.5 659.0,511.0C667.0,502.5 666.8,502.5 673.0,494.0C679.2,485.5 690.0,470.0 696.0,460.0C702.0,450.0 705.3,442.2 709.0,434.0C712.7,425.8 716.3,413.7 718.0,411.0C719.7,408.3 720.2,410.8 719.0,418.0C717.8,425.2 714.7,442.0 711.0,454.0C707.3,466.0 701.5,480.2 697.0,490.0C692.5,499.8 688.8,505.5 684.0,513.0C679.2,520.5 674.0,527.7 668.0,535.0C662.0,542.3 661.3,544.8 648.0,557.0C634.7,569.2 600.3,597.0 588.0,608.0C575.7,619.0 579.8,615.3 574.0,623.0C568.2,630.7 558.2,644.7 553.0,654.0C547.8,663.3 544.0,675.0 543.0,679.0C542.0,683.0 542.8,681.3 547.0,678.0C551.2,674.7 553.7,669.7 568.0,659.0C582.3,648.3 616.8,625.7 633.0,614.0C649.2,602.3 654.8,598.3 665.0,589.0C675.2,579.7 685.5,568.7 694.0,558.0C702.5,547.3 710.0,535.5 716.0,525.0C722.0,514.5 725.5,507.7 730.0,495.0C734.5,482.3 740.3,460.5 743.0,449.0C745.7,437.5 745.3,435.2 746.0,426.0C746.7,416.8 747.2,403.5 747.0,394.0C746.8,384.5 746.2,377.8 745.0,369.0C743.8,360.2 742.0,349.5 740.0,341.0C738.0,332.5 734.8,321.7 733.0,318.0Z"/>
+        <path class="om-gold" d="M717.0,420.0C717.3,416.2 718.3,413.3 715.0,420.0C711.7,426.7 703.8,447.7 697.0,460.0C690.2,472.3 680.2,485.5 674.0,494.0C667.8,502.5 668.2,502.3 660.0,511.0C651.8,519.7 633.7,537.8 625.0,546.0C616.3,554.2 611.2,556.5 608.0,560.0C604.8,563.5 609.0,561.2 606.0,567.0C603.0,572.8 593.3,588.3 590.0,595.0C586.7,601.7 586.2,605.0 586.0,607.0C585.8,609.0 578.8,615.3 589.0,607.0C599.2,598.7 632.0,571.7 647.0,557.0C662.0,542.3 671.7,528.5 679.0,519.0C686.3,509.5 687.0,507.5 691.0,500.0C695.0,492.5 699.3,483.5 703.0,474.0C706.7,464.5 710.7,452.0 713.0,443.0C715.3,434.0 716.7,423.8 717.0,420.0Z"/>
+      </g>
+      <g class="om-head">
+        <path d="M343.0,142.0C344.0,146.5 347.8,161.3 351.0,169.0C354.2,176.7 358.2,182.3 362.0,188.0C365.8,193.7 373.3,194.8 374.0,203.0C374.7,211.2 367.3,226.2 366.0,237.0C364.7,247.8 365.3,260.2 366.0,268.0C366.7,275.8 368.3,279.0 370.0,284.0C371.7,289.0 373.7,293.7 376.0,298.0C378.3,302.3 380.5,305.8 384.0,310.0C387.5,314.2 393.2,319.7 397.0,323.0C400.8,326.3 402.7,327.7 407.0,330.0C411.3,332.3 418.0,335.3 423.0,337.0C428.0,338.7 432.2,339.5 437.0,340.0C441.8,340.5 449.5,340.3 452.0,340.0C454.5,339.7 454.2,339.2 452.0,338.0C449.8,336.8 443.7,335.5 439.0,333.0C434.3,330.5 429.0,327.0 424.0,323.0C419.0,319.0 414.0,315.0 409.0,309.0C404.0,303.0 397.7,294.2 394.0,287.0C390.3,279.8 388.2,274.3 387.0,266.0C385.8,257.7 386.2,244.8 387.0,237.0C387.8,229.2 389.0,227.0 392.0,219.0C395.0,211.0 408.3,197.5 405.0,189.0C401.7,180.5 382.0,175.8 372.0,168.0C362.0,160.2 349.8,146.3 345.0,142.0C340.2,137.7 342.0,137.5 343.0,142.0Z"/>
+        <path d="M740.0,140.0C740.0,137.8 739.7,138.3 738.0,140.0C736.3,141.7 735.2,144.8 730.0,150.0C724.8,155.2 715.5,164.5 707.0,171.0C698.5,177.5 683.7,185.5 679.0,189.0C674.3,192.5 676.5,186.7 679.0,192.0C681.5,197.3 690.7,213.0 694.0,221.0C697.3,229.0 698.2,230.8 699.0,240.0C699.8,249.2 699.8,267.5 699.0,276.0C698.2,284.5 696.8,285.2 694.0,291.0C691.2,296.8 690.2,301.2 682.0,311.0C673.8,320.8 654.0,339.7 645.0,350.0C636.0,360.3 621.5,375.2 628.0,373.0C634.5,370.8 672.0,345.5 684.0,337.0C696.0,328.5 694.7,328.8 700.0,322.0C705.3,315.2 712.5,303.5 716.0,296.0C719.5,288.5 720.0,284.3 721.0,277.0C722.0,269.7 722.2,259.2 722.0,252.0C721.8,244.8 721.8,241.5 720.0,234.0C718.2,226.5 712.5,212.3 711.0,207.0C709.5,201.7 707.8,207.5 711.0,202.0C714.2,196.5 725.5,182.2 730.0,174.0C734.5,165.8 736.3,158.7 738.0,153.0C739.7,147.3 740.0,142.2 740.0,140.0Z"/>
+        <path class="om-brow" d="M450.0,123.0C445.5,126.2 448.3,124.2 451.0,126.0C453.7,127.8 460.5,130.5 466.0,134.0C471.5,137.5 476.0,140.0 484.0,147.0C492.0,154.0 504.3,164.7 514.0,176.0C523.7,187.3 537.0,208.5 542.0,215.0C547.0,221.5 541.8,218.0 544.0,215.0C546.2,212.0 550.8,203.0 555.0,197.0C559.2,191.0 562.8,186.0 569.0,179.0C575.2,172.0 584.2,162.2 592.0,155.0C599.8,147.8 608.8,141.0 616.0,136.0C623.2,131.0 631.8,127.3 635.0,125.0C638.2,122.7 639.7,125.0 635.0,122.0C630.3,119.0 615.0,110.7 607.0,107.0C599.0,103.3 594.5,102.0 587.0,100.0C579.5,98.0 572.7,95.8 562.0,95.0C551.3,94.2 532.3,94.5 523.0,95.0C513.7,95.5 513.5,96.0 506.0,98.0C498.5,100.0 487.3,102.8 478.0,107.0C468.7,111.2 454.5,119.8 450.0,123.0Z"/>
+        <path class="om-horn-l" d="M329.0,42.0C328.5,46.3 327.5,59.5 329.0,69.0C330.5,78.5 333.8,89.7 338.0,99.0C342.2,108.3 348.7,118.0 354.0,125.0C359.3,132.0 363.3,135.5 370.0,141.0C376.7,146.5 376.7,149.3 394.0,158.0C411.3,166.7 456.8,184.8 474.0,193.0C491.2,201.2 488.0,200.3 497.0,207.0C506.0,213.7 522.3,228.7 528.0,233.0C533.7,237.3 531.2,234.7 531.0,233.0C530.8,231.3 530.5,228.8 527.0,223.0C523.5,217.2 517.7,207.3 510.0,198.0C502.3,188.7 489.8,175.2 481.0,167.0C472.2,158.8 469.5,157.2 457.0,149.0C444.5,140.8 419.3,126.8 406.0,118.0C392.7,109.2 385.8,103.5 377.0,96.0C368.2,88.5 359.8,80.5 353.0,73.0C346.2,65.5 339.5,56.0 336.0,51.0C332.5,46.0 333.2,44.5 332.0,43.0C330.8,41.5 329.5,37.7 329.0,42.0Z"/>
+        <path class="om-horn-r" d="M755.0,43.0C754.3,39.0 754.8,40.3 751.0,45.0C747.2,49.7 740.2,61.8 732.0,71.0C723.8,80.2 712.2,91.3 702.0,100.0C691.8,108.7 684.0,114.3 671.0,123.0C658.0,131.7 635.8,144.0 624.0,152.0C612.2,160.0 606.5,165.3 600.0,171.0C593.5,176.7 590.2,180.2 585.0,186.0C579.8,191.8 573.2,200.3 569.0,206.0C564.8,211.7 562.7,215.0 560.0,220.0C557.3,225.0 553.8,233.3 553.0,236.0C552.2,238.7 549.8,240.2 555.0,236.0C560.2,231.8 575.2,217.7 584.0,211.0C592.8,204.3 591.8,204.0 608.0,196.0C624.2,188.0 663.2,172.3 681.0,163.0C698.8,153.7 706.3,147.0 715.0,140.0C723.7,133.0 727.5,128.7 733.0,121.0C738.5,113.3 744.3,102.7 748.0,94.0C751.7,85.3 753.8,77.5 755.0,69.0C756.2,60.5 755.7,47.0 755.0,43.0Z"/>
+      </g>
+    </svg>
+  </template>
+
+  <!-- 1. Intro -->
+  <div class="loader">
+    <div class="loader__inner" aria-hidden="true">
+      <div class="loader__owl" data-owl></div>
+      <p class="wordmark loader__word"><span>C</span><span>Ó</span><span>D</span><span>I</span><span>G</span><span>O</span><span>&nbsp;</span><span class="u">U</span></p>
+      <p class="loader__tag">¿Por qué no hacer posible lo imposible?</p>
+    </div>
+    <button class="loader__skip" type="button">Saltar intro →</button>
+  </div>
+
+  <header class="nav">
+    <a class="nav__brand" href="#inicio" aria-label="Código U, ir al inicio">
+      <img src="assets/owl.svg" alt="" width="22" height="32">
+      <span class="wordmark">CÓDIGO <span class="u">U</span></span>
+    </a>
+    <nav class="nav__links" aria-label="Secciones">
+      <a href="#origen">Origen</a>
+      <a href="#que-hacemos">Qué hacemos</a>
+      <a href="#planes">Planes</a>
+      <a href="#preguntas">Preguntas</a>
+    </nav>
+    <div class="nav__actions">
+      <a class="btn btn--sm btn--ghost nav__app" href="https://old-glitter-0b1a.angelcastro09090.workers.dev" target="_blank" rel="noopener">Entrar a la App</a>
+      <a class="btn btn--sm" data-wa="general" href="https://wa.me/" target="_blank" rel="noopener">Quiero mi plan</a>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- 2. Hero -->
+    <section class="hero" id="inicio">
+      <h1 class="hero__title" data-split>
+        Prepararte bien <em>no debería</em> costar una fortuna.
+      </h1>
+      <div class="hero__owl" data-owl data-follow></div>
+      <div class="hero__foot">
+        <p class="hero__lead reveal">
+          Somos <strong>CÓDIGO U</strong>: el Pre-ICFES hecho por estudiantes, para estudiantes.
+          Plataforma propia, simulacros reales y un solo pago por temporada.
+        </p>
+        <div class="hero__cta reveal">
+          <a class="btn magnetic" data-wa="general" href="https://wa.me/" target="_blank" rel="noopener">Quiero mi plan <span aria-hidden="true">→</span></a>
+          <a class="link" href="https://old-glitter-0b1a.angelcastro09090.workers.dev" target="_blank" rel="noopener">Ver la plataforma</a>
+        </div>
+      </div>
+      <a class="scroll-cue" href="#problema" aria-label="Bajar a la siguiente sección"><span></span></a>
+    </section>
+
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker__track">
+        <span>Lectura Crítica</span><i>✦</i><span>Matemáticas</span><i>✦</i><span>Sociales y Ciudadanas</span><i>✦</i><span>Ciencias Naturales</span><i>✦</i><span>Inglés</span><i>✦</i>
+        <span>Lectura Crítica</span><i>✦</i><span>Matemáticas</span><i>✦</i><span>Sociales y Ciudadanas</span><i>✦</i><span>Ciencias Naturales</span><i>✦</i><span>Inglés</span><i>✦</i>
+      </div>
+    </div>
+
+    <!-- 3. El problema -->
+    <section class="problem" id="problema">
+      <div class="wrap">
+        <p class="eyebrow">Seguro te ha pasado</p>
+        <h2 class="h2" data-split>Quieres entrar a la <em>universidad</em> que sueñas, pero el camino viene cuesta arriba.</h2>
+      </div>
+      <!-- En escritorio esta escena se queda fija mientras caen las notas -->
+      <div class="problem__stage">
+        <div class="wrap">
+          <p class="lead reveal">El Pre-ICFES tradicional se volvió un privilegio. Y eso se paga caro:</p>
+        </div>
+        <div class="notes">
+          <article class="note" style="--r:-6deg">
+            <span class="note__num">Nota #01</span>
+            <h3 class="note__title">Precios imposibles</h3>
+            <p>Preuniversitarios tan caros que dejan por fuera a miles de estudiantes.</p>
+          </article>
+          <article class="note" style="--r:4deg">
+            <span class="note__num">Nota #02</span>
+            <h3 class="note__title">PDFs que nadie abre</h3>
+            <p>Carpetas de archivos estáticos que aburren y no miden tu progreso.</p>
+          </article>
+          <article class="note" style="--r:-3deg">
+            <span class="note__num">Nota #03</span>
+            <h3 class="note__title">Horarios que chocan con el colegio</h3>
+            <p>Clases a hora fija justo cuando tienes tareas, proyectos o estás cansado.</p>
+          </article>
+          <article class="note" style="--r:7deg">
+            <span class="note__num">Nota #04</span>
+            <h3 class="note__title">Cero retroalimentación</h3>
+            <p>Un puntaje sin explicación: no sabes en qué fallaste ni cómo mejorar.</p>
+          </article>
+        </div>
+      </div>
+      <div class="wrap">
+        <p class="problem__turn reveal">Nosotros pensamos <em>distinto.</em></p>
+      </div>
+    </section>
+
+    <!-- 4. Origen -->
+    <section class="origin dark" id="origen">
+      <div class="wrap">
+        <p class="eyebrow">¿De dónde salimos?</p>
+        <h2 class="h2" data-split>Nacimos de estudiantes, <em>para estudiantes.</em></h2>
+        <p class="lead reveal">
+          CÓDIGO U nació con una meta clara: democratizar la preparación de alto nivel y convertirnos en uno de
+          los mejores Pre-ICFES del país, llegando a miles de jóvenes en toda Colombia sin las barreras de precio
+          de los preuniversitarios tradicionales.
+        </p>
+
+        <div class="cities">
+          <div class="cities__text">
+            <h3 class="h3 reveal">La unión de <em>tres ciudades.</em></h3>
+            <p class="reveal">Tres cofundadores, tres ciudades y una sola meta: que llegues a la universidad.</p>
+          </div>
+          <svg class="cities__map" viewBox="0 0 400 360" role="img" aria-label="Bogotá, Bucaramanga y Piedecuesta conectadas">
+            <g class="grid">
+              <path d="M0 60H400M0 120H400M0 180H400M0 240H400M0 300H400M80 0V360M160 0V360M240 0V360M320 0V360"/>
+            </g>
+            <path class="route" d="M110 290 C 130 200, 190 130, 230 80"/>
+            <path class="route" d="M230 80 C 250 95, 260 120, 260 140"/>
+            <path class="route" d="M260 140 C 220 210, 160 270, 110 290"/>
+            <g class="city" transform="translate(110 290)"><circle r="18" class="pulse"/><circle r="7"/><text x="-16" y="40">Bogotá</text><text class="coord" x="-16" y="56">4.71° N</text></g>
+            <g class="city" transform="translate(230 80)"><circle r="18" class="pulse"/><circle r="7"/><text x="-140" y="6">Bucaramanga</text><text class="coord" x="-140" y="22">7.12° N</text></g>
+            <g class="city" transform="translate(260 140)"><circle r="18" class="pulse"/><circle r="7"/><text x="22" y="34">Piedecuesta</text><text class="coord" x="22" y="50">6.99° N</text></g>
+          </svg>
+        </div>
+
+        <div class="team">
+          <article class="member">
+            <div class="member__photo" data-initials="AP"><!-- <img src="assets/team/angel-parra.jpg" alt="Ángel Parra"> --></div>
+            <p class="member__city">Bogotá</p>
+            <h3 class="member__name">Ángel Parra</h3>
+            <p class="member__role">Creador y Cofundador</p>
+            <p>El motor original de la iniciativa. Lidera la visión académica y la estructura del material estratégico de estudio.</p>
+          </article>
+          <article class="member">
+            <div class="member__photo" data-initials="AC"><!-- <img src="assets/team/angel-castro.jpg" alt="Ángel Castro"> --></div>
+            <p class="member__city">Bucaramanga</p>
+            <h3 class="member__name">Ángel Castro</h3>
+            <p class="member__role">Cofundador · Desarrollador Full-Stack</p>
+            <p>Arquitecto y programador de la plataforma web interactiva y la infraestructura digital que hace posible un ecosistema robusto.</p>
+          </article>
+          <article class="member">
+            <div class="member__photo" data-initials="SF"><!-- <img src="assets/team/steven-fonseca.jpg" alt="Steven Fonseca"> --></div>
+            <p class="member__city">Piedecuesta</p>
+            <h3 class="member__name">Steven Fonseca</h3>
+            <p class="member__role">Cofundador · Desarrollador Full-Stack</p>
+            <p>Arquitecto y programador de las plataformas interactivas, las herramientas de entrenamiento y la lógica de evaluación.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Qué hacemos -->
+    <section class="what" id="que-hacemos" aria-label="¿Qué hacemos?">
+      <article class="panel panel--gold">
+        <span class="panel__num" aria-hidden="true">01</span>
+        <div class="panel__body">
+          <p class="eyebrow">¿Qué hacemos?</p>
+          <h2 class="panel__title">Plataforma web personalizada</h2>
+          <p class="panel__q">Un entorno propio, hecho a la medida para entrenar sin distracciones. Adiós a los PDFs estáticos.</p>
+          <a class="link" href="https://old-glitter-0b1a.angelcastro09090.workers.dev" target="_blank" rel="noopener">Conocer la plataforma</a>
+        </div>
+        <div class="mock" aria-hidden="true">
+          <div class="mock__bar"><i></i><i></i><i></i></div>
+          <p class="mock__hi">Hola, Estudiante.</p>
+          <div class="mock__card">
+            <span>Pregunta del día</span>
+            <b>Matemáticas · Geometría</b>
+            <div class="mock__opts"><i></i><i class="ok"></i><i></i><i></i></div>
+          </div>
+          <div class="mock__row">
+            <div class="mock__stat"><span>Racha</span><b>7 días</b></div>
+            <div class="mock__stat"><span>Nivel</span><b>3</b></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="panel panel--ink">
+        <span class="panel__num" aria-hidden="true">02</span>
+        <div class="panel__body">
+          <p class="eyebrow">¿Qué hacemos?</p>
+          <h2 class="panel__title">Simulacros reales y cuadernillos actualizados</h2>
+          <p class="panel__q">Evaluación constante en las 5 áreas del Saber 11, con retroalimentación inmediata y tu puntaje global.</p>
+        </div>
+        <ul class="areas">
+          <li style="--c:var(--tone-violet)">Lectura Crítica</li>
+          <li style="--c:var(--tone-blue)">Matemáticas</li>
+          <li style="--c:var(--tone-rose)">Sociales y Ciudadanas</li>
+          <li style="--c:var(--tone-green)">Ciencias Naturales</li>
+          <li style="--c:var(--gold)">Inglés</li>
+        </ul>
+      </article>
+
+      <article class="panel panel--cream">
+        <span class="panel__num" aria-hidden="true">03</span>
+        <div class="panel__body">
+          <p class="eyebrow">¿Qué hacemos?</p>
+          <h2 class="panel__title">Alto nivel a precio justo</h2>
+          <p class="panel__q">Herramientas tecnológicas y material filtrado de primer nivel, a una fracción de lo que cuesta una academia convencional.</p>
+        </div>
+        <div class="compare" aria-hidden="true">
+          <p class="compare__old"><span>Academia tradicional</span><s>$$$$$$</s></p>
+          <p class="compare__new"><span>CÓDIGO U</span><b>$99.900</b></p>
+        </div>
+      </article>
+    </section>
+
+    <!-- 6. Cómo lo hacemos -->
+    <section class="how dark" id="como">
+      <div class="wrap how__grid">
+        <div>
+          <p class="eyebrow">¿Cómo lo hacemos?</p>
+          <h2 class="h2" data-split>Flexibilidad total <em>24/7.</em></h2>
+          <p class="lead reveal">
+            Sabemos que el colegio y la rutina absorben tiempo. Nuestro sistema se adapta a tu ritmo para que
+            practiques y presentes simulacros a cualquier hora, desde cualquier dispositivo.
+          </p>
+          <ul class="moments">
+            <li class="reveal"><b>6:00 a.m.</b> antes del colegio</li>
+            <li class="reveal"><b>12:30 p.m.</b> en el descanso</li>
+            <li class="reveal"><b>11:00 p.m.</b> cuando todos duermen</li>
+          </ul>
+        </div>
+        <div class="clock" aria-hidden="true">
+          <svg viewBox="0 0 200 200">
+            <circle class="clock__face" cx="100" cy="100" r="92"/>
+            <g class="clock__ticks"></g>
+            <line class="clock__h" x1="100" y1="100" x2="100" y2="58"/>
+            <line class="clock__m" x1="100" y1="100" x2="100" y2="28"/>
+            <circle class="clock__dot" cx="100" cy="100" r="5"/>
+          </svg>
+          <div class="devices"><span>Celular</span><span>Tablet</span><span>Computador</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Frase gigante -->
+    <section class="statement">
+      <p class="statement__text" data-split="fade">Los que llegan lejos, se prepararon <em>a tiempo.</em></p>
+    </section>
+
+    <!-- 8. Planes -->
+    <section class="plans dark" id="planes">
+      <div class="wrap">
+        <p class="eyebrow">Planes por calendario académico</p>
+        <h2 class="h2" data-split>Un solo pago. <em>Sin mensualidades.</em></h2>
+        <p class="lead reveal">Sin cobros ocultos. Pagas una vez por temporada de examen y tienes acceso completo a la plataforma y a los simulacros durante toda tu preparación.</p>
+
+        <p class="price reveal"><span class="price__cur">$</span><span class="price__num" data-count="99900">99.900</span><span class="price__cop">COP</span></p>
+
+        <div class="plan-grid">
+          <article class="plan" data-season="b">
+            <p class="plan__next">Próxima temporada</p>
+            <p class="plan__tag">Calendario B</p>
+            <h3 class="plan__name">Marzo – Abril</h3>
+            <p>Preparación intensiva para quienes presentan la prueba en el <strong>primer semestre</strong> del año.</p>
+            <ul class="checks">
+              <li>Acceso completo a la plataforma</li>
+              <li>Simulacros durante toda tu preparación</li>
+              <li>Las 5 áreas del Saber 11</li>
+              <li>Retroalimentación inmediata y puntaje global</li>
+            </ul>
+            <a class="btn magnetic" data-wa="b" href="https://wa.me/" target="_blank" rel="noopener">Quiero el Calendario B</a>
+          </article>
+          <article class="plan" data-season="a">
+            <p class="plan__next">Próxima temporada</p>
+            <p class="plan__tag">Calendario A</p>
+            <h3 class="plan__name">Agosto – Septiembre</h3>
+            <p>Preparación completa para quienes presentan el examen en el <strong>segundo semestre</strong> del año.</p>
+            <ul class="checks">
+              <li>Acceso completo a la plataforma</li>
+              <li>Simulacros durante toda tu preparación</li>
+              <li>Las 5 áreas del Saber 11</li>
+              <li>Retroalimentación inmediata y puntaje global</li>
+            </ul>
+            <a class="btn magnetic" data-wa="a" href="https://wa.me/" target="_blank" rel="noopener">Quiero el Calendario A</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. Preguntas -->
+    <section class="faq" id="preguntas">
+      <div class="wrap">
+        <p class="eyebrow">Preguntas frecuentes</p>
+        <h2 class="h2" data-split>Preguntas frecuentes, <em>respuestas claras.</em></h2>
+        <div class="faq__list">
+          <details>
+            <summary>¿Qué incluye el pago de $99.900?</summary>
+            <p>Acceso completo a la plataforma y a los simulacros durante toda tu temporada de preparación. Es un único pago: sin mensualidades ni cobros ocultos.</p>
+          </details>
+          <details>
+            <summary>¿Cuál temporada es la mía?</summary>
+            <p>Si presentas el Saber 11 en el primer semestre (Calendario B), tu temporada es Marzo – Abril. Si lo presentas en el segundo semestre (Calendario A), es Agosto – Septiembre.</p>
+          </details>
+          <details>
+            <summary>¿Puedo estudiar desde el celular?</summary>
+            <p>Sí. La plataforma funciona 24/7 desde celular, tablet o computador, para que practiques cuando tengas tiempo.</p>
+          </details>
+          <details>
+            <summary>¿Me obligan a conectarme en horarios fijos?</summary>
+            <p>No. La plataforma y los simulacros están disponibles 24/7 para que estudies a tu ritmo, sin chocar con el colegio.</p>
+          </details>
+          <details>
+            <summary>¿Qué áreas cubren?</summary>
+            <p>Las 5 del Saber 11: Lectura Crítica, Matemáticas, Sociales y Ciudadanas, Ciencias Naturales e Inglés.</p>
+          </details>
+          <details>
+            <summary>¿Cómo pago?</summary>
+            <p>Escríbenos por WhatsApp con el plan que quieres y te contamos los medios de pago disponibles.</p>
+          </details>
+          <details>
+            <summary>¿Qué pasa después de presentar el examen?</summary>
+            <p>Tu plan cubre la temporada de tu calendario. Como es un pago único, no hay renovaciones automáticas ni cobros después del examen.</p>
+          </details>
+          <details>
+            <summary>¿Tienen relación con el ICFES?</summary>
+            <p>No. CÓDIGO U es una iniciativa independiente; los puntajes de la plataforma son de práctica.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10. Cierre -->
+    <section class="closing">
+      <div class="closing__owl" data-owl data-follow></div>
+      <p class="closing__quote" data-split>¿Por qué no hacer posible <em>lo imposible?</em></p>
+      <a class="btn magnetic" data-wa="general" href="https://wa.me/" target="_blank" rel="noopener">Empieza tu preparación <span aria-hidden="true">→</span></a>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer__grid">
+      <div>
+        <p class="wordmark footer__word">CÓDIGO <span class="u">U</span></p>
+        <p class="footer__tag">Preparación que te lleva a tu próximo nivel.</p>
+      </div>
+      <ul class="footer__links">
+        <li><a href="https://old-glitter-0b1a.angelcastro09090.workers.dev" target="_blank" rel="noopener">Plataforma</a></li>
+        <li><a data-wa="general" href="https://wa.me/" target="_blank" rel="noopener">WhatsApp</a></li>
+        <li><a href="https://www.instagram.com/codigo__u" target="_blank" rel="noopener">Instagram</a></li>
+        <li><a href="https://www.tiktok.com/@codigou1921" target="_blank" rel="noopener">TikTok</a></li>
+      </ul>
+    </div>
+    <p class="wrap footer__legal">© 2026 Código U. Código U no tiene relación con el ICFES; los puntajes son de práctica.</p>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
