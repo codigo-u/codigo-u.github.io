@@ -387,7 +387,7 @@
       .from(note, { opacity: 0, duration: 0.12 }, i * 0.55)
       .from(note, { y: () => -innerHeight * 0.8, rotation: i % 2 ? 28 : -24, duration: 1, ease: 'power2.out' }, i * 0.55);
   });
-  drop.to({}, { duration: 0.4 });
+  drop.to({}, { duration: 0.1 });
 
   /* ---------- 4. Mapa de las tres ciudades ---------- */
   const routes = document.querySelectorAll('.cities__map .route');
@@ -415,13 +415,13 @@
     scrollTrigger: {
       trigger: '.what',
       start: 'top top',
-      end: () => '+=' + innerHeight * 1.7 * (panels.length - 1),
+      end: () => '+=' + innerHeight * 1.2 * (panels.length - 1),
       pin: true,
-      scrub: 1,
+      scrub: 0.6,
     },
   });
-  // Cada panel se queda quieto un rato antes de que llegue el siguiente.
-  stack.to({}, { duration: 0.6 });
+  // Un respiro corto en cada panel (largo se sentía como una pausa al bajar).
+  stack.to({}, { duration: 0.2 });
   panels.slice(1).forEach((panel, i) => {
     const prev = panels[i];
     stack
@@ -442,7 +442,7 @@
         .from(panel.querySelector('.climb__goal'), { scale: 0, opacity: 0, duration: 0.2, ease: 'none' }, '<0.72');
     }
     stack
-      .to({}, { duration: 0.6 });
+      .to({}, { duration: 0.2 });
   });
 
   /* ---------- 6. Reloj que gira con el scroll ---------- */
