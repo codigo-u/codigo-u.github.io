@@ -27,6 +27,24 @@
   const nextSeason = month >= 4 && month <= 8 ? 'a' : 'b';
   document.querySelector(`.plan[data-season="${nextSeason}"]`)?.classList.add('is-next');
 
+  /* ---------- Panel 03: un título distinto en cada visita, en orden ---------- */
+  const PANEL3_TITLES = [
+    'Nosotros ponemos el entrenamiento. <em>Tú aseguras tu cupo y el 500.</em>',
+    'Nosotros te damos la jugada. <em>Tú dejas tu carrera asegurada.</em>',
+    'Nosotros ponemos la herramienta. <em>Tú haces que cada punto se sienta.</em>',
+    'Nosotros te armamos el camino. <em>Tú defines tu propio destino.</em>',
+    'Nosotros te ayudamos. <em>Hasta los 500 no paramos.</em>',
+  ];
+  const rotTitle = document.querySelector('[data-rotate]');
+  if (rotTitle) {
+    let visits = 0;
+    try {
+      visits = Number(localStorage.getItem('cu-visitas')) || 0;
+      localStorage.setItem('cu-visitas', String(visits + 1));
+    } catch (e) { /* sin almacenamiento: se queda el primer título */ }
+    rotTitle.innerHTML = PANEL3_TITLES[visits % PANEL3_TITLES.length];
+  }
+
   /* ---------- Búhos ---------- */
   const owlTpl = document.getElementById('owl-tpl');
   document.querySelectorAll('[data-owl]').forEach((el) => el.replaceChildren(owlTpl.content.cloneNode(true)));
@@ -410,10 +428,19 @@
       .fromTo(panel, { yPercent: 100 }, { yPercent: 0, duration: 1, ease: 'none' })
       .to(prev.querySelectorAll('.panel__body, .mock, .areas, .climb'), { y: -90, opacity: 0.15, duration: 1, ease: 'none' }, '<')
       .from(panel.querySelector('.panel__num'), { yPercent: 45, duration: 1, ease: 'none' }, '<')
-      .from(panel.querySelectorAll('.panel__body, .areas li, .climb__label, .climb__bar, .climb__deal p'), { y: 70, opacity: 0, duration: 0.6, stagger: 0.04, ease: 'none' }, '<0.3');
-    // En el panel 03 la barra del puntaje sube hasta "Tu carrera"
+      .from(panel.querySelectorAll('.panel__body, .areas li, .climb__label, .climb__bar, .climb__ticks, .climb__deal p'), { y: 70, opacity: 0, duration: 0.6, stagger: 0.04, ease: 'none' }, '<0.3');
+    // En el panel 03 la barra se llena hasta 500 mientras el número cuenta,
+    // y la marca "420+ Tu carrera" aparece cuando la barra pasa por ahí
     const climbBar = panel.querySelector('.climb__bar i');
-    if (climbBar) stack.fromTo(climbBar, { scaleX: 0.35 }, { scaleX: 1, duration: 0.5, ease: 'none' }, '<0.3');
+    if (climbBar) {
+      const score = panel.querySelector('.climb__n');
+      const o = { v: 0 };
+      score.textContent = '0';
+      stack
+        .fromTo(climbBar, { scaleX: 0 }, { scaleX: 1, duration: 0.9, ease: 'none' }, '<0.3')
+        .to(o, { v: 500, duration: 0.9, ease: 'none', onUpdate: () => { score.textContent = Math.round(o.v); } }, '<')
+        .from(panel.querySelector('.climb__goal'), { scale: 0, opacity: 0, duration: 0.2, ease: 'none' }, '<0.72');
+    }
     stack
       .to({}, { duration: 0.6 });
   });

@@ -595,24 +595,33 @@ ul { margin: 0; padding: 0; list-style: none; }
 /* Comparación de precio */
 /* Panel 03: tu puntaje sube hasta tu carrera */
 .panel__title em { font-family: var(--f-serif); font-style: italic; font-weight: 400; color: var(--gold-text); letter-spacing: -.02em; }
-.climb { position: relative; display: grid; gap: 18px; width: min(460px, 100%); justify-self: center; }
-.climb__label { font-size: .8rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-2); }
-.climb__bar { position: relative; height: 34px; border-radius: 99px; background: rgba(18, 19, 20, .1); border: 3px solid var(--ink); }
-.climb__bar i { position: absolute; inset: 3px auto 3px 3px; width: calc(88% - 6px); border-radius: 99px; background: linear-gradient(90deg, var(--gold-deep), var(--tone-green)); transform-origin: 0 50%; }
+.climb { position: relative; display: grid; gap: 14px; width: min(480px, 100%); justify-self: center; }
+.climb__label {
+  display: flex; justify-content: space-between; align-items: baseline;
+  font-size: .8rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-2);
+}
+.climb__n { font-family: var(--f-display); font-weight: 800; font-size: clamp(1.8rem, 3.4vw, 2.6rem); letter-spacing: -.03em; color: var(--ink); font-variant-numeric: tabular-nums; }
+.climb__bar { position: relative; height: 34px; margin-top: 36px; border-radius: 99px; background: rgba(18, 19, 20, .1); border: 3px solid var(--ink); }
+.climb__bar i { position: absolute; inset: 3px; border-radius: 99px; background: linear-gradient(90deg, var(--gold-deep), var(--tone-green)); transform-origin: 0 50%; }
+/* Marca de la meta en 420 de 500 (84%) */
 .climb__goal {
-  position: absolute; right: 0; bottom: calc(100% + 10px);
-  font-family: var(--f-display); font-weight: 800; font-size: .85rem;
+  position: absolute; left: 84%; bottom: calc(100% + 10px); translate: -50% 0;
+  font-family: var(--f-display); font-weight: 800; font-size: .8rem; white-space: nowrap;
   padding: .3em .8em; border-radius: 99px; background: var(--ink); color: var(--gold);
 }
-.climb__deal { display: grid; gap: 12px; margin-top: 14px; }
+.climb__goal::after { content: ""; position: absolute; left: 50%; top: 100%; translate: -50% 0; width: 3px; height: 13px; background: var(--ink); }
+.climb__ticks { display: flex; justify-content: space-between; font-family: var(--f-display); font-weight: 700; font-size: .8rem; color: var(--ink-2); margin-top: -4px; }
+.climb__deal { display: grid; gap: 12px; margin-top: 12px; }
 .climb__deal p {
-  font-family: var(--f-display); font-weight: 800; font-size: clamp(1.3rem, 2.6vw, 2rem); letter-spacing: -.02em;
+  display: grid; grid-template-columns: auto 1fr; column-gap: .45em; align-items: baseline;
+  font-family: var(--f-display); font-weight: 800; font-size: clamp(1.2rem, 2.2vw, 1.6rem); letter-spacing: -.02em;
   padding: .55em .9em; border: 3px solid var(--ink); border-radius: 18px; box-shadow: 7px 7px 0 var(--ink);
 }
-.climb__us { background: var(--paper-warm); }
-.climb__you { background: var(--gold); justify-self: end; }
+.climb__deal small { grid-column: 1 / -1; font-family: var(--f-body); font-weight: 500; font-size: .95rem; letter-spacing: 0; opacity: .8; margin-top: 2px; }
+.climb__us { background: var(--paper-warm); margin-right: 28px; }
+.climb__you { background: var(--gold); margin-left: 28px; }
 .climb__deal b { color: var(--gold-text); }
-.climb__you b { color: var(--ink); text-decoration: underline 4px; text-underline-offset: 4px; }
+.climb__you b { color: var(--ink); }
 
 /* ---------- 6. Cómo lo hacemos ---------- */
 .how { padding: clamp(90px, 16vh, 180px) 0; }

@@ -16,7 +16,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&family=Manrope:wght@500;700;800&display=swap" rel="stylesheet">
   <!-- Al publicar un cambio, sube el número de ?v= para que los navegadores no usen la copia vieja -->
-  <link rel="stylesheet" href="css/styles.css?v=7">
+  <link rel="stylesheet" href="css/styles.css?v=8">
 
   <script>
     // Las animaciones solo se activan si el usuario no pidió reducir el movimiento.
@@ -236,15 +236,17 @@
         <span class="panel__num" aria-hidden="true">03</span>
         <div class="panel__body">
           <p class="eyebrow">¿Qué hacemos?</p>
-          <h2 class="panel__title">Nosotros te ayudamos. <em>Tú le metes más.</em></h2>
+          <!-- El título cambia en cada visita (main.js, PANEL3_TITLES) -->
+          <h2 class="panel__title" data-rotate>Nosotros ponemos el entrenamiento. <em>Tú aseguras tu cupo y el 500.</em></h2>
           <p class="panel__q">Hay muchos estudiantes que no pueden entrar a la universidad de sus sueños por su puntaje del ICFES. Que no te pase a ti.</p>
         </div>
         <div class="climb" aria-hidden="true">
-          <p class="climb__label">Tu puntaje</p>
-          <div class="climb__bar"><i></i><span class="climb__goal">Tu carrera</span></div>
+          <p class="climb__label">Tu puntaje <b class="climb__n">500</b></p>
+          <div class="climb__bar"><i></i><span class="climb__goal">420+ Tu carrera</span></div>
+          <div class="climb__ticks"><span>0</span><span>100</span><span>200</span><span>300</span><span>400</span><span>500</span></div>
           <div class="climb__deal">
-            <p class="climb__us"><b>Nosotros</b> te ayudamos</p>
-            <p class="climb__you"><b>Tú</b> le metes más</p>
+            <p class="climb__us"><b>50%</b> Código U <small>Simulacros reales y plataforma 24/7.</small></p>
+            <p class="climb__you"><b>50%</b> Tu nivel <small>Constancia para romper el puntaje.</small></p>
           </div>
         </div>
       </article>
@@ -397,6 +399,6 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script src="js/main.js?v=7"></script>
+  <script src="js/main.js?v=8"></script>
 </body>
 </html>
