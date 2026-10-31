@@ -181,6 +181,25 @@
   loader.style.animation = 'none';
   document.body.style.overflow = 'hidden';
 
+  // Al final, el búho grande vuela y se encoge hasta el búho del menú (zoom invertido)
+  const lOwlBox = loader.querySelector('.loader__owl');
+  const navOwl = document.querySelector('.nav__brand img');
+  nav.classList.remove('is-hidden');
+  gsap.set(navOwl, { opacity: 0 });
+  let flyTo = null;
+  const fly = (key) => {
+    if (!flyTo) {
+      const a = lOwlBox.getBoundingClientRect();
+      const b = navOwl.getBoundingClientRect();
+      flyTo = {
+        x: b.left + b.width / 2 - (a.left + a.width / 2),
+        y: b.top + b.height / 2 - (a.top + a.height / 2),
+        s: b.width / a.width,
+      };
+    }
+    return flyTo[key];
+  };
+
   const intro = gsap.timeline({ defaults: { ease: 'power3.out' } });
   intro
     .from(lOwl.querySelectorAll('.om-leaf-l, .om-leaf-r'), { y: 80, opacity: 0, duration: 0.8, stagger: 0.1 })
@@ -190,10 +209,21 @@
     .from(lOwl.querySelector('.om-gold'), { scale: 0, transformOrigin: '100% 0%', duration: 0.6, ease: 'back.out(2.4)' }, '-=0.35')
     .from('.loader__word span', { yPercent: 120, opacity: 0, duration: 0.55, stagger: 0.05 }, '-=0.35')
     .from('.loader__tag', { y: 12, opacity: 0, duration: 0.5 }, '-=0.2')
-    .to(loader, { yPercent: -100, duration: 1, ease: 'expo.inOut', delay: 0.45 })
-    .to(heroWords, { yPercent: 0, duration: 1.1, stagger: 0.06, ease: 'expo.out' }, '-=0.45')
-    .to(heroOwl, { scale: 1, rotation: 0, opacity: 1, duration: 1, ease: 'back.out(1.8)' }, '-=0.9')
-    .to(heroReveal, { y: 0, opacity: 1, duration: 0.8, stagger: 0.1 }, '-=0.8')
+    // Se van las letras y el búho toma impulso
+    .to(['.loader__word', '.loader__tag', '.loader__skip'], { y: 20, opacity: 0, duration: 0.35, ease: 'power2.in' }, '+=0.45')
+    .to(lOwl, { scale: 1.12, transformOrigin: '50% 50%', duration: 0.3, ease: 'power2.out' }, '<0.1')
+    // Vuela a la esquina mientras se descubre la página
+    .addLabel('fly')
+    .to(lOwlBox, { x: () => fly('x'), y: () => fly('y'), scale: () => fly('s'), duration: 1.05, ease: 'expo.inOut' }, 'fly')
+    .to(lOwl, { scale: 1, duration: 1.05, ease: 'expo.inOut' }, 'fly')
+    .to(loader, { backgroundColor: 'rgba(244, 234, 211, 0)', duration: 0.8, ease: 'power2.inOut' }, 'fly+=0.2')
+    .to(heroWords, { yPercent: 0, duration: 1.1, stagger: 0.06, ease: 'expo.out' }, 'fly+=0.45')
+    .to(heroOwl, { scale: 1, rotation: 0, opacity: 1, duration: 1, ease: 'back.out(1.8)' }, 'fly+=0.6')
+    .to(heroReveal, { y: 0, opacity: 1, duration: 0.8, stagger: 0.1 }, 'fly+=0.75')
+    // Aterriza: el búho del menú toma su lugar con un pequeño rebote
+    .set(lOwlBox, { opacity: 0 }, 'fly+=1.05')
+    .set(navOwl, { opacity: 1 }, 'fly+=1.05')
+    .fromTo(navOwl, { scale: 1.5 }, { scale: 1, duration: 0.45, ease: 'back.out(3)' }, 'fly+=1.05')
     .add(() => {
       loader.remove();
       document.body.style.overflow = '';
