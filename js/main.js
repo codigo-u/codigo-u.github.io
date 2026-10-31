@@ -31,32 +31,59 @@
   const owlTpl = document.getElementById('owl-tpl');
   document.querySelectorAll('[data-owl]').forEach((el) => el.replaceChildren(owlTpl.content.cloneNode(true)));
 
-  /* ---------- Búho que reacciona al tocarlo ---------- */
-  const OWL_PHRASES = ['¡Uhuu!', '¡Tú puedes!', '¡A estudiar!', '¿Ya hiciste tu racha?', '¡Vamos por ese 400!', '¡Hoy sí!'];
-  let phrase = 0;
+  /* ---------- Búho que reacciona al tocarlo: cuenta datos de Código U, en orden ---------- */
+  const OWL_FACTS = [
+    'Código U nació de estudiantes, para estudiantes.',
+    'Somos de tres ciudades: Bogotá, Bucaramanga y Piedecuesta.',
+    'Tenemos casi 3.000 preguntas para que practiques.',
+    'Te esperan 3 simulacros tipo Saber 11.',
+    'Entrenas las 5 áreas: lectura crítica, matemáticas, sociales, ciencias e inglés.',
+    'Cada pregunta trae su explicación paso a paso.',
+    'La plataforma está abierta 24/7, también desde tu celular.',
+    'Hay clases en vivo con profes y material descargable.',
+    '¿Te perdiste una clase? Tienes talleres para ponerte al día.',
+    'En la zona VIP llevas una racha diaria, como en Duolingo.',
+    'Pagas por WhatsApp, con Nequi o tarjeta.',
+    'Ángel Parra creó Código U. Ángel Castro y Steven Fonseca programan la plataforma.',
+  ];
+  let fact = 0;
+  // Tiempo para leer la burbuja: más largo si el dato es largo
+  const readTime = (text) => Math.max(2.4, text.length * 0.06);
   document.querySelectorAll('[data-poke]').forEach((wrap) => {
+    const isMascot = wrap.hasAttribute('data-mascot');
     wrap.setAttribute('role', 'button');
     wrap.setAttribute('tabindex', '0');
-    wrap.setAttribute('aria-label', 'Búho de Código U, tócalo');
+    wrap.setAttribute('aria-label', isMascot ? 'Búho de Código U: tócalo para ver un dato o arrástralo' : 'Búho de Código U, tócalo');
     const bubble = document.createElement('span');
     bubble.className = 'owl-bubble';
     bubble.setAttribute('aria-live', 'polite');
     wrap.appendChild(bubble);
-    if (wrap.classList.contains('hero__owl')) {
+    if (isMascot) {
       const hint = document.createElement('span');
       hint.className = 'owl-hint';
-      hint.textContent = 'Tócame';
+      hint.textContent = 'Tócame · Muéveme';
       wrap.appendChild(hint);
     }
 
+    // La burbuja se acomoda según dónde esté la mascota (arriba/abajo, izquierda/derecha)
+    const placeBubble = () => {
+      if (!isMascot) return;
+      const r = wrap.getBoundingClientRect();
+      bubble.classList.toggle('to-left', r.left + r.width / 2 < innerWidth / 2);
+      bubble.classList.toggle('below', r.top < 200);
+    };
+
     const poke = () => {
+      if (wrap.dragged) return; // fue un arrastre, no un toque
       wrap.querySelector('.owl-hint')?.remove();
-      bubble.textContent = OWL_PHRASES[phrase++ % OWL_PHRASES.length];
+      const text = OWL_FACTS[fact++ % OWL_FACTS.length];
+      bubble.textContent = text;
+      placeBubble();
 
       if (!animate) {
         bubble.classList.add('is-on');
         clearTimeout(bubble.hideTimer);
-        bubble.hideTimer = setTimeout(() => bubble.classList.remove('is-on'), 1600);
+        bubble.hideTimer = setTimeout(() => bubble.classList.remove('is-on'), readTime(text) * 1000);
         return;
       }
       const svg = wrap.querySelector('.owl');
@@ -75,16 +102,77 @@
         duration: 0.12, yoyo: true, repeat: 5, ease: 'sine.inOut',
       }));
       gsap.fromTo(wing, { rotation: 0 }, { rotation: -22, transformOrigin: '100% 0%', duration: 0.14, yoyo: true, repeat: 5, ease: 'sine.inOut' });
-      // Burbuja con una frase
+      // Burbuja con el dato
+      const below = bubble.classList.contains('below');
       gsap.timeline()
-        .fromTo(bubble, { scale: 0, opacity: 0, y: 10 }, { scale: 1, opacity: 1, y: 0, transformOrigin: '50% 100%', duration: 0.4, ease: 'back.out(2.5)' })
-        .to(bubble, { opacity: 0, y: -8, duration: 0.3 }, '+=1.4');
+        .fromTo(bubble, { scale: 0, opacity: 0, y: below ? -10 : 10 }, { scale: 1, opacity: 1, y: 0, transformOrigin: below ? '50% 0%' : '50% 100%', duration: 0.4, ease: 'back.out(2.5)' })
+        .to(bubble, { opacity: 0, y: below ? 8 : -8, duration: 0.3 }, `+=${readTime(text)}`);
     };
     wrap.addEventListener('click', poke);
     wrap.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); poke(); }
     });
+    if (isMascot) makeDraggable(wrap, bubble);
   });
+
+  /* ---------- Mascota: se arrastra a cualquier parte de la pantalla ---------- */
+  function makeDraggable(el, bubble) {
+    const KEY = 'cu-mascota';
+    const clamp = (x, y) => {
+      const r = el.getBoundingClientRect();
+      return [Math.min(Math.max(8, x), innerWidth - r.width - 8), Math.min(Math.max(8, y), innerHeight - r.height - 8)];
+    };
+    const place = (x, y) => {
+      [x, y] = clamp(x, y);
+      Object.assign(el.style, { left: `${x}px`, top: `${y}px`, right: 'auto', bottom: 'auto' });
+      // El aviso "Tócame" se pone del lado con más espacio
+      el.querySelector('.owl-hint')?.classList.toggle('to-right', x < innerWidth / 2);
+    };
+    // Recordar dónde la dejó la persona (en proporción a la pantalla)
+    try {
+      const saved = JSON.parse(localStorage.getItem(KEY));
+      if (saved) place(saved[0] * innerWidth, saved[1] * innerHeight);
+    } catch (e) { /* sin almacenamiento: queda en su esquina */ }
+
+    let drag = null;
+    el.addEventListener('pointerdown', (e) => {
+      const r = el.getBoundingClientRect();
+      drag = { px: e.clientX, py: e.clientY, x: r.left, y: r.top, moved: false, id: e.pointerId };
+    });
+    el.addEventListener('pointermove', (e) => {
+      if (!drag) return;
+      const dx = e.clientX - drag.px;
+      const dy = e.clientY - drag.py;
+      if (!drag.moved) {
+        if (Math.hypot(dx, dy) < 6) return; // un toque pequeño no cuenta como arrastre
+        drag.moved = true;
+        try { el.setPointerCapture(drag.id); } catch (err) { /* algunos navegadores no lo permiten */ }
+        el.classList.add('is-dragging');
+        bubble.classList.remove('is-on');
+        if (window.gsap) gsap.to(bubble, { opacity: 0, duration: 0.15 });
+      }
+      place(drag.x + dx, drag.y + dy);
+    });
+    const end = () => {
+      if (!drag) return;
+      if (drag.moved) {
+        el.classList.remove('is-dragging');
+        el.dragged = true; // evita que el clic de soltar cuente como toque
+        setTimeout(() => { el.dragged = false; }, 60);
+        const r = el.getBoundingClientRect();
+        try { localStorage.setItem(KEY, JSON.stringify([r.left / innerWidth, r.top / innerHeight])); } catch (e) { /* nada */ }
+      }
+      drag = null;
+    };
+    el.addEventListener('pointerup', end);
+    el.addEventListener('pointercancel', end);
+    // Si cambia el tamaño de la pantalla, que no quede por fuera
+    addEventListener('resize', () => {
+      if (!el.style.left) return;
+      const r = el.getBoundingClientRect();
+      place(r.left, r.top);
+    });
+  }
 
   /* ---------- Reloj: marcas de las horas ---------- */
   const ticks = document.querySelector('.clock__ticks');
@@ -172,7 +260,7 @@
   const loader = document.querySelector('.loader');
   const lOwl = loader.querySelector('.owl');
   const heroWords = splitWords(document.querySelector('.hero__title'));
-  const heroOwl = document.querySelector('.hero__owl');
+  const heroOwl = document.querySelector('.mascot__owl');
   const heroReveal = document.querySelectorAll('.hero .reveal');
   gsap.set(heroWords, { yPercent: 110 });
   gsap.set(heroReveal, { y: 24, opacity: 0 });
@@ -200,6 +288,7 @@
     return flyTo[key];
   };
 
+  const FLY = 1.9; // segundos que dura el vuelo del búho hasta el menú
   const intro = gsap.timeline({ defaults: { ease: 'power3.out' } });
   intro
     .from(lOwl.querySelectorAll('.om-leaf-l, .om-leaf-r'), { y: 80, opacity: 0, duration: 0.8, stagger: 0.1 })
@@ -210,20 +299,21 @@
     .from('.loader__word span', { yPercent: 120, opacity: 0, duration: 0.55, stagger: 0.05 }, '-=0.35')
     .from('.loader__tag', { y: 12, opacity: 0, duration: 0.5 }, '-=0.2')
     // Se van las letras y el búho toma impulso
-    .to(['.loader__word', '.loader__tag', '.loader__skip'], { y: 20, opacity: 0, duration: 0.35, ease: 'power2.in' }, '+=0.45')
-    .to(lOwl, { scale: 1.12, transformOrigin: '50% 50%', duration: 0.3, ease: 'power2.out' }, '<0.1')
-    // Vuela a la esquina mientras se descubre la página
-    .addLabel('fly')
-    .to(lOwlBox, { x: () => fly('x'), y: () => fly('y'), scale: () => fly('s'), duration: 1.05, ease: 'expo.inOut' }, 'fly')
-    .to(lOwl, { scale: 1, duration: 1.05, ease: 'expo.inOut' }, 'fly')
-    .to(loader, { backgroundColor: 'rgba(244, 234, 211, 0)', duration: 0.8, ease: 'power2.inOut' }, 'fly+=0.2')
-    .to(heroWords, { yPercent: 0, duration: 1.1, stagger: 0.06, ease: 'expo.out' }, 'fly+=0.45')
-    .to(heroOwl, { scale: 1, rotation: 0, opacity: 1, duration: 1, ease: 'back.out(1.8)' }, 'fly+=0.6')
-    .to(heroReveal, { y: 0, opacity: 1, duration: 0.8, stagger: 0.1 }, 'fly+=0.75')
+    .to(['.loader__word', '.loader__tag', '.loader__skip'], { y: 20, opacity: 0, duration: 0.4, ease: 'power2.in' }, '+=0.5')
+    .to(lOwl, { scale: 1.15, transformOrigin: '50% 50%', duration: 0.5, ease: 'power2.out' }, '<0.1')
+    // Vuela a la esquina mientras se descubre la página (lento, para que se disfrute)
+    .addLabel('fly', '+=0.1')
+    .to(lOwlBox, { x: () => fly('x'), y: () => fly('y'), scale: () => fly('s'), duration: FLY, ease: 'power3.inOut' }, 'fly')
+    .to(lOwl, { scale: 1, duration: FLY, ease: 'power3.inOut' }, 'fly')
+    .to(loader, { backgroundColor: 'rgba(244, 234, 211, 0)', duration: 1.3, ease: 'power2.inOut' }, 'fly+=0.35')
+    .to(heroWords, { yPercent: 0, duration: 1.1, stagger: 0.06, ease: 'expo.out' }, 'fly+=0.9')
+    .to(heroReveal, { y: 0, opacity: 1, duration: 0.8, stagger: 0.1 }, 'fly+=1.3')
     // Aterriza: el búho del menú toma su lugar con un pequeño rebote
-    .set(lOwlBox, { opacity: 0 }, 'fly+=1.05')
-    .set(navOwl, { opacity: 1 }, 'fly+=1.05')
-    .fromTo(navOwl, { scale: 1.5 }, { scale: 1, duration: 0.45, ease: 'back.out(3)' }, 'fly+=1.05')
+    .set(lOwlBox, { opacity: 0 }, `fly+=${FLY}`)
+    .set(navOwl, { opacity: 1 }, `fly+=${FLY}`)
+    .fromTo(navOwl, { scale: 1.5 }, { scale: 1, duration: 0.5, ease: 'back.out(3)' }, `fly+=${FLY}`)
+    // Y aparece la mascota en su esquina
+    .to(heroOwl, { scale: 1, rotation: 0, opacity: 1, duration: 0.8, ease: 'back.out(1.8)' }, `fly+=${FLY - 0.2}`)
     .add(() => {
       loader.remove();
       document.body.style.overflow = '';
@@ -232,9 +322,9 @@
 
   loader.querySelector('.loader__skip').addEventListener('click', () => intro.progress(1));
 
-  // Quien ya vio la intro en esta visita la ve más rápido.
+  // Quien ya vio la intro en esta visita la ve un poco más rápido (sin perder el vuelo).
   try {
-    if (sessionStorage.getItem('cu-intro')) intro.timeScale(2.6);
+    if (sessionStorage.getItem('cu-intro')) intro.timeScale(1.3);
     sessionStorage.setItem('cu-intro', '1');
   } catch (e) { /* sin almacenamiento: no pasa nada */ }
 
@@ -318,9 +408,13 @@
     const prev = panels[i];
     stack
       .fromTo(panel, { yPercent: 100 }, { yPercent: 0, duration: 1, ease: 'none' })
-      .to(prev.querySelectorAll('.panel__body, .mock, .areas, .compare'), { y: -90, opacity: 0.15, duration: 1, ease: 'none' }, '<')
+      .to(prev.querySelectorAll('.panel__body, .mock, .areas, .climb'), { y: -90, opacity: 0.15, duration: 1, ease: 'none' }, '<')
       .from(panel.querySelector('.panel__num'), { yPercent: 45, duration: 1, ease: 'none' }, '<')
-      .from(panel.querySelectorAll('.panel__body, .areas li, .compare p'), { y: 70, opacity: 0, duration: 0.6, stagger: 0.04, ease: 'none' }, '<0.3')
+      .from(panel.querySelectorAll('.panel__body, .areas li, .climb__label, .climb__bar, .climb__deal p'), { y: 70, opacity: 0, duration: 0.6, stagger: 0.04, ease: 'none' }, '<0.3');
+    // En el panel 03 la barra del puntaje sube hasta "Tu carrera"
+    const climbBar = panel.querySelector('.climb__bar i');
+    if (climbBar) stack.fromTo(climbBar, { scaleX: 0.35 }, { scaleX: 1, duration: 0.5, ease: 'none' }, '<0.3');
+    stack
       .to({}, { duration: 0.6 });
   });
 

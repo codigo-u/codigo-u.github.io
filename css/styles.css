@@ -233,8 +233,11 @@ ul { margin: 0; padding: 0; list-style: none; }
   border-radius: 14px;
   background: var(--ink);
   color: var(--cream);
-  font: 800 .95rem var(--f-display);
-  white-space: nowrap;
+  font: 800 .95rem/1.3 var(--f-display);
+  width: max-content;
+  max-width: min(300px, 80vw);
+  white-space: normal;
+  text-align: center;
   pointer-events: none;
   opacity: 0;
   box-shadow: 4px 4px 0 var(--gold);
@@ -249,22 +252,52 @@ ul { margin: 0; padding: 0; list-style: none; }
   border-top-color: var(--ink);
 }
 .owl-bubble.is-on { opacity: 1; }
-.hero__owl .owl-bubble { left: auto; right: 0; translate: none; }
-.hero__owl .owl-bubble::after { left: auto; right: 24px; translate: none; }
+
+/* ---------- Mascota: búho fijo que se arrastra a cualquier parte ---------- */
+.mascot {
+  position: fixed;
+  right: 18px;
+  bottom: calc(18px + env(safe-area-inset-bottom));
+  z-index: 60;
+  width: clamp(70px, 8vw, 110px);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  filter: drop-shadow(0 10px 12px rgba(18, 19, 20, .28));
+  transition: filter .25s;
+}
+.mascot.is-dragging { cursor: grabbing; filter: drop-shadow(0 20px 22px rgba(18, 19, 20, .4)); }
+/* Borde crema tipo sticker: se ve igual sobre fondos claros y oscuros */
+.mascot .owl path { stroke: var(--cream); stroke-width: 26; stroke-linejoin: round; paint-order: stroke; }
+.mascot .owl-bubble {
+  left: auto; right: 0; translate: none;
+  width: max-content; max-width: min(270px, 70vw);
+  white-space: normal; line-height: 1.3; text-align: left;
+}
+.mascot .owl-bubble::after { left: auto; right: 26px; translate: none; }
+.mascot .owl-bubble.to-left { right: auto; left: 0; }
+.mascot .owl-bubble.to-left::after { right: auto; left: 26px; }
+.mascot .owl-bubble.below { bottom: auto; top: calc(100% + 12px); }
+.mascot .owl-bubble.below::after { top: auto; bottom: 100%; border-top-color: transparent; border-bottom-color: var(--ink); }
 .owl-hint {
   position: absolute;
-  top: 100%;
-  left: 50%;
-  translate: -50% 0;
-  margin-top: 8px;
-  font: 800 .68rem var(--f-display);
-  letter-spacing: .16em;
+  right: calc(100% + 10px);
+  top: 50%;
+  translate: 0 -50%;
+  padding: .45em .8em;
+  border-radius: 99px;
+  background: var(--ink);
+  color: var(--gold);
+  font: 800 .66rem var(--f-display);
+  letter-spacing: .14em;
   text-transform: uppercase;
-  color: var(--gold-text);
   white-space: nowrap;
+  pointer-events: none;
   animation: hint 1.8s ease-in-out infinite;
 }
-@keyframes hint { 50% { opacity: .35; } }
+.owl-hint.to-right { right: auto; left: calc(100% + 10px); }
+@keyframes hint { 50% { opacity: .45; } }
 
 /* ---------- 2. Hero ---------- */
 .hero {
@@ -285,7 +318,6 @@ ul { margin: 0; padding: 0; list-style: none; }
   letter-spacing: -.055em;
   max-width: 11ch;
 }
-.hero__owl { width: 76px; margin: 26px 0 0 auto; }
 .hero__foot { display: grid; gap: 26px; margin-top: 26px; }
 .hero__lead { font-size: clamp(1.05rem, 1.4vw, 1.25rem); max-width: 40ch; color: #3A3A3D; }
 .hero__cta { display: flex; flex-wrap: wrap; align-items: center; gap: 22px; }
@@ -294,7 +326,6 @@ ul { margin: 0; padding: 0; list-style: none; }
 @keyframes cue { 0% { transform: translateY(-100%); } 60%, 100% { transform: translateY(100%); } }
 
 @media (min-width: 900px) {
-  .hero__owl { position: absolute; right: var(--gutter); top: 21%; width: clamp(130px, 15vw, 230px); margin: 0; }
   .hero__foot { grid-template-columns: 1fr auto; align-items: end; margin-top: 48px; }
 }
 
@@ -562,11 +593,26 @@ ul { margin: 0; padding: 0; list-style: none; }
 .areas li::before { content: ""; width: .55em; height: .55em; border-radius: 50%; background: var(--c); }
 
 /* Comparación de precio */
-.compare { position: relative; display: grid; gap: 18px; }
-.compare p { display: grid; }
-.compare span { font-size: .8rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-2); }
-.compare s { font-family: var(--f-display); font-weight: 800; font-size: clamp(2rem, 5vw, 3.6rem); color: rgba(18, 19, 20, .3); text-decoration-thickness: 4px; }
-.compare b { font-family: var(--f-display); font-weight: 800; font-size: clamp(3rem, 8vw, 6.4rem); letter-spacing: -.05em; line-height: 1; }
+/* Panel 03: tu puntaje sube hasta tu carrera */
+.panel__title em { font-family: var(--f-serif); font-style: italic; font-weight: 400; color: var(--gold-text); letter-spacing: -.02em; }
+.climb { position: relative; display: grid; gap: 18px; width: min(460px, 100%); justify-self: center; }
+.climb__label { font-size: .8rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-2); }
+.climb__bar { position: relative; height: 34px; border-radius: 99px; background: rgba(18, 19, 20, .1); border: 3px solid var(--ink); }
+.climb__bar i { position: absolute; inset: 3px auto 3px 3px; width: calc(88% - 6px); border-radius: 99px; background: linear-gradient(90deg, var(--gold-deep), var(--tone-green)); transform-origin: 0 50%; }
+.climb__goal {
+  position: absolute; right: 0; bottom: calc(100% + 10px);
+  font-family: var(--f-display); font-weight: 800; font-size: .85rem;
+  padding: .3em .8em; border-radius: 99px; background: var(--ink); color: var(--gold);
+}
+.climb__deal { display: grid; gap: 12px; margin-top: 14px; }
+.climb__deal p {
+  font-family: var(--f-display); font-weight: 800; font-size: clamp(1.3rem, 2.6vw, 2rem); letter-spacing: -.02em;
+  padding: .55em .9em; border: 3px solid var(--ink); border-radius: 18px; box-shadow: 7px 7px 0 var(--ink);
+}
+.climb__us { background: var(--paper-warm); }
+.climb__you { background: var(--gold); justify-self: end; }
+.climb__deal b { color: var(--gold-text); }
+.climb__you b { color: var(--ink); text-decoration: underline 4px; text-underline-offset: 4px; }
 
 /* ---------- 6. Cómo lo hacemos ---------- */
 .how { padding: clamp(90px, 16vh, 180px) 0; }
